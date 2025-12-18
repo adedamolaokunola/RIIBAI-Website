@@ -1,51 +1,36 @@
-const nextConfig = {
-  productionBrowserSourceMaps: true,
-  distDir: process.env.DIST_DIR || '.next',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    unoptimized: true,  // REQUIRED for static export
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.pexels.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.pixabay.com',
-      },
-    ],
-  },
-  output: 'export',  // THIS IS THE KEY LINE – enables static HTML export
+name: Deploy to GitHub Pages
 
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/homepage',
-        permanent: false,
-      },
-    ];
-  },
+on:
+  push:
+    branches: [main]  # Or your default branch
 
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(jsx|tsx)$/,
-      exclude: [/node_modules/],
-      use: [{
-        loader: '@dhiwise/component-tagger/nextLoader',
-      }],
-    });
-    return config;
-  },
-};
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-export default nextConfig;
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build  # Creates /out folder
+
+      - run: touch out/.nojekyll  # Important: Bypasses Jekyll processing
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+      - uses: actions/setup-node@v4
+  with:
+    node-version: '20'
+    cache: 'npm'
+    cache-dependency-path: package-lock.json   # Tells it exactly where to find the file
