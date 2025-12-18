@@ -9,7 +9,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    unoptimized: true,  // REQUIRED for static export
+    unoptimized: true,  // Required for static export on GitHub Pages
     remotePatterns: [
       {
         protocol: 'https',
@@ -25,7 +25,12 @@ const nextConfig = {
       },
     ],
   },
-  output: 'export',  // THIS IS THE KEY LINE – enables static HTML export
+  output: 'export',  // Crucial for static HTML export
+
+  // Add these three lines for project sites (not username.github.io repos)
+  trailingSlash: true,                  // Fixes routing issues
+  basePath: '/RIIBAI-Website',          // ← Replace with your actual repo name, e.g. '/my-website'
+  assetPrefix: '/RIIBAI-Website/',      // ← Same as above, with trailing slash
 
   async redirects() {
     return [
