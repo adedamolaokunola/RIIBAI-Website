@@ -29,4 +29,6 @@ jobs:
         with:
           path: out
 
-      - uses: actions/deploy-pages@v4
+      - uses: actions/setup-node@v4
+  with:
+    node-version: '20'
