@@ -1,22 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  images: { unoptimized: true },
-  // For project site (not username.github.io):
-  basePath: '/RIIBAI-Website',  // Replace with your actual repo name
-  assetPrefix: '/RIIBAI-Website/',
-};
-export default nextConfig;
-
-{
   productionBrowserSourceMaps: true,
-  distDir: process.env.DIST_DIR || '.next',  typescript: {
+  distDir: process.env.DIST_DIR || '.next',
+  typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true,  // REQUIRED for static export
     remotePatterns: [
       {
         protocol: 'https',
@@ -32,6 +25,8 @@ export default nextConfig;
       },
     ],
   },
+  output: 'export',  // THIS IS THE KEY LINE – enables static HTML export
+
   async redirects() {
     return [
       {
@@ -41,6 +36,7 @@ export default nextConfig;
       },
     ];
   },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.(jsx|tsx)$/,
