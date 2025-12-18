@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+  staticPageGenerationTimeout: 300,  // 300 seconds (5 minutes) — adjust higher if needed
+},
   productionBrowserSourceMaps: true,
   distDir: process.env.DIST_DIR || '.next',
   typescript: {
