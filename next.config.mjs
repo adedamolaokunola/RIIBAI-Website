@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  images: { unoptimized: true },
+  // For project site (not username.github.io):
+  basePath: '/RIIBAI-Website',  // Replace with your actual repo name
+  assetPrefix: '/RIIBAI-Website/',
+};
+export default nextConfig;
+
+{
   productionBrowserSourceMaps: true,
   distDir: process.env.DIST_DIR || '.next',  typescript: {
     ignoreBuildErrors: true,
